@@ -1,10 +1,13 @@
-import './App.css';
+import Navbar from './Navbar.js';
+import Home from './Home';
 // NOTE: if before 17 -> import React from 'react'
 function App() {
+  const title = 'Welcome world';
   return (
     <div className="App">
+      <Navbar />
       <div className="content">
-        <h1>App Component</h1>
+        <Home />
       </div>
     </div>
   );
