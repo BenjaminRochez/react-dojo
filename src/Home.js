@@ -2,38 +2,29 @@ import { useState, useEffect } from 'react';
 import BlogList from './BlogList';
 
 const Home = () => {
-    //let name = 'mario';
-    //const [name, setName] = useState('mario');
 
-    /*const handleClick = () => {
-        setName('Luigi');
-        console.log(name);
-    }*/
-
-    
-
-    const [blogs, setBlogs] = useState([
-        { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1 },
-        { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2 },
-        { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'mario', id: 3 }
-    ]);
-
-    const [name, setName] = useState('mario');
+    let [blogs, setBlogs] = useState([]);
+    const [isPending, setIsPending] = useState(true);
 
     useEffect(() => {
-        console.log('changes');
-    }, [name]);
+        {/* SETTIMEOUT just for showcase purpose */}
+        setTimeout(() => {
+            fetch('http://localhost:7000/blogs')
+                .then(res => {
+                    return res.json();
+                })
+                .then(data => {
+                    setBlogs(data);
+                    setIsPending(false);
+                })
+        }, 2000);
 
-    const handleDelete = (id) => {
-        const newBlogs = blogs.filter((blog) => blog.id !== id);
-        setBlogs(newBlogs);
-    }
+    }, []);
 
     return (
         <div className="home">
-            <BlogList blogs={blogs} title="All blogs" handleDelete={handleDelete}/>            
-            <button onClick={() => setName('Luigi')}>Change name</button>
-            <p>{name}</p>
+            {isPending && <div>Loading...</div>}
+            {!isPending && <BlogList blogs={blogs} title="All blogs" />}
         </div>
     );
 }
@@ -47,3 +38,9 @@ export default Home;
 //}   
 
 //<BlogList blogs={blogs.filter((blog) => blog.author === 'mario' )} title="Mario's blogs" handleDelete={handleDelete}/>            
+
+
+//const handleDelete = (id) => {
+//    const newBlogs = blogs.filter((blog) => blog.id !== id);
+//    setBlogs(newBlogs);
+//}
