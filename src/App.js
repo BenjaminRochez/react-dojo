@@ -5,6 +5,7 @@ import Navbar from './Navbar.js';
 import Home from './Home';
 import Create from './Create';
 import BlogDetails from './BlogDetails.js';
+import NotFound from './NotFound';
 // NOTE: if before 17 -> import React from 'react'
 function App() {
   //const title = 'Welcome world';
@@ -24,6 +25,11 @@ function App() {
             <Route path="/blogs/:id">
               <BlogDetails />
             </Route>
+
+            <Route path="*">
+              <NotFound />
+            </Route>
+
           </Switch>
         </div>
       </div>
