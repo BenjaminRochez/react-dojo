@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from './Navbar.js';
 import Home from './Home';
 import Create from './Create';
+import BlogDetails from './BlogDetails.js';
 // NOTE: if before 17 -> import React from 'react'
 function App() {
   //const title = 'Welcome world';
@@ -19,6 +20,9 @@ function App() {
 
             <Route path="/create">
               <Create />
+            </Route>
+            <Route path="/blogs/:id">
+              <BlogDetails />
             </Route>
           </Switch>
         </div>
