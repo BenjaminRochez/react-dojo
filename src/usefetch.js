@@ -8,38 +8,44 @@ const useFetch = (url) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-
         const abordCont = new AbortController();
 
-        setTimeout(() => {
-            fetch(url, { signal: abordCont.signal })
-                .then(res => {
-                    if (!res.ok) {
-                        throw Error('could not fetch the data for that ressource')
-                    }
-                    return res.json();
-                })
-                .then(data => {
-                    setData(data);
+        async function logFetch(url) {
+            try {
+                const response = await fetch(url, { signal: abordCont.signal });
+                if (!response.ok) {
+                    throw Error('could not fetch the data for that ressource');
+                }
+                //console.log(await response.json());
+                fillData(await response.json());
+            }
+            catch (err) {
+                if (err.name === 'AbortError') {
+                    console.log('Fetch aborted');
+                } else {
                     setIsPending(false);
-                    setError(null);
-                })
-                .catch(err => {
-                    if (err.name === 'AbortError') {
-                        console.log('Fetch aborted');
-                    } else {
-                        setIsPending(false);
-                        setError(err.message);
-                    }
-                })
-        }, 2000);
+                    setError(err.message);
+                }
+            }
+        }
 
+        logFetch(url);
         return () => {
             abordCont.abort();
         }
 
     }, [url]);
     return { data, isPending, error };
+
+
+
+    // Filldata
+    function fillData(data) {
+        console.log(data);
+        setData(data);
+        setIsPending(false);
+        setError(null);
+    }
 }
 
 export default useFetch;
